@@ -51,6 +51,11 @@ const mapStateToProps = (state) => ({});
 const mapDispacthToProps = (dispatch) => ({
   addCourseToCart(id) {
     dispatch(addToCart(id));
+    // dispatch(prueba(id));
   },
 });
+// const prueba = (id) => ({
+//   type: "maldita puta",
+//   id,
+// });
 export default connect(mapStateToProps, mapDispacthToProps)(CourseCard);
