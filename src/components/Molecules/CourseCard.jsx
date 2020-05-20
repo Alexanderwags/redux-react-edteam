@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { addToCart } from "../Redux/actionCreator";
+import { addToCart, delToCart } from "../Redux/actionCreator";
 import { connect } from "react-redux";
 
 const CourseCard = ({
@@ -11,6 +11,7 @@ const CourseCard = ({
   price,
   professor,
   addCourseToCart,
+  verificacion,
   cart,
 }) => (
   <article className="card">
@@ -25,9 +26,11 @@ const CourseCard = ({
       <div className="s-main-center">
         <button
           className="button--ghost-alert button--tiny"
-          onClick={() => addCourseToCart(id)}
+          onClick={(e) => console.log(e.target.value)}
         >
-          {cart.find((a) => a === id) ? "en el carrito" : `$ ${price} USD`}
+          {cart.find((a) => a === id)
+            ? "remover del carrito"
+            : `$ ${price} USD`}
         </button>
       </div>
     </div>
@@ -52,9 +55,13 @@ const mapStateToProps = (state) => ({
   cart: state.cart,
 });
 const mapDispacthToProps = (dispatch) => ({
-  addCourseToCart(id) {
-    dispatch(addToCart(id));
-    // dispatch(prueba(id));
+  verificacion(id, e) {
+    console.log(e.target.value);
+    if (e.target.value == "remover del carrito") {
+      dispatch(delToCart(id));
+    } else {
+      dispatch(addToCart(id));
+    }
   },
 });
 // const prueba = (id) => ({
