@@ -1,16 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
-function CardCounter({ cardLength }) {
-  return (
-    <li>
-      <button className="button tiny ghost">{`Carrito : ${cardLength.length}`}</button>
-    </li>
-  );
-}
-const mapStateToProps = (state) => {
-  return {
-    cardLength: state.cart,
-  };
-};
-const mapDispacthToProps = () => {};
-export default connect(mapStateToProps, mapDispacthToProps)(CardCounter);
+
+const CartCounter = ({ cartLength }) => (
+  <li>
+    <button className="button tiny ghost">
+      {`Carrito: ${cartLength.length}`}
+    </button>
+  </li>
+);
+
+const mapStateToProps = (state) => ({
+  cartLength: state.cartReducer.cart,
+});
+
+const mapDispatchToProps = () => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartCounter);

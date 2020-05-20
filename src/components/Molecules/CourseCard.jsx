@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { addToCart, delToCart } from "../Redux/actionCreator";
+import { addToCart, deleteFromCart } from "../Redux/actionCreator";
 import { connect } from "react-redux";
 
 const CourseCard = ({
@@ -11,8 +11,8 @@ const CourseCard = ({
   price,
   professor,
   addCourseToCart,
-  verificacion,
   cart,
+  deleteCourseFromCart,
 }) => (
   <article className="card">
     <div className="img-container s-ratio-16-9 s-radius-tr s-radius-tl">
@@ -24,14 +24,21 @@ const CourseCard = ({
       <h3 className="center">{title}</h3>
       <div className="s-main-center">{professor}</div>
       <div className="s-main-center">
-        <button
-          className="button--ghost-alert button--tiny"
-          onClick={(e) => console.log(e.target.value)}
-        >
-          {cart.find((a) => a === id)
-            ? "remover del carrito"
-            : `$ ${price} USD`}
-        </button>
+        {cart.find((a) => a === id) ? (
+          <button
+            className="button--ghost-alert button--tiny"
+            onClick={() => deleteCourseFromCart(id)}
+          >
+            Remover del carrito
+          </button>
+        ) : (
+          <button
+            className="button--ghost-alert button--tiny"
+            onClick={() => addCourseToCart(id)}
+          >
+            {`$ ${price} USD`}
+          </button>
+        )}
       </div>
     </div>
   </article>
@@ -52,20 +59,16 @@ CourseCard.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  cart: state.cart,
+  cart: state.cartReducer.cart,
 });
-const mapDispacthToProps = (dispatch) => ({
-  verificacion(id, e) {
-    console.log(e.target.value);
-    if (e.target.value == "remover del carrito") {
-      dispatch(delToCart(id));
-    } else {
-      dispatch(addToCart(id));
-    }
+
+const mapDispatchToProps = (dispatch) => ({
+  addCourseToCart(id) {
+    dispatch(addToCart(id));
+  },
+  deleteCourseFromCart(id) {
+    dispatch(deleteFromCart(id));
   },
 });
-// const prueba = (id) => ({
-//   type: "maldita puta",
-//   id,
-// });
-export default connect(mapStateToProps, mapDispacthToProps)(CourseCard);
+
+export default connect(mapStateToProps, mapDispatchToProps)(CourseCard);

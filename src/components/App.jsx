@@ -1,15 +1,16 @@
 import React from "react";
 import "../styles/styles.scss";
-import AppRouter from "./AppRouter";
+import AppRoutes from "./AppRouter";
 import { Provider } from "react-redux";
-import store from "./Redux/store";
+import store from "../components/Redux/store";
+import { getCourseList } from "../components/Redux/actionCreator";
 
-const App = () => {
-  return (
-    <Provider store={store}>
-      <AppRouter />
-    </Provider>
-  );
-};
+store.dispatch(getCourseList());
+
+const App = () => (
+  <Provider store={store}>
+    <AppRoutes />
+  </Provider>
+);
 
 export default App;

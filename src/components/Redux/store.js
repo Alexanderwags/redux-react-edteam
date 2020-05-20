@@ -1,23 +1,43 @@
-import { createStore } from "redux";
-import { ADD_TO_CART, DELETE_TO_CART } from "./actions";
+import { createStore, combineReducers, applyMiddleware } from "redux"
+import { ADD_TO_CART, DELETE_FROM_CART, GET_COURSE_LIST } from "./actions";
+import { composeWithDevTools } from "redux-devtools-extension"
+import thunk from "redux-thunk";
 
 const initialStore = {
-  cart: [],
-};
-const rootReducer = (state = initialStore, action) => {
-  console.log(action.type);
-  if (action.type === ADD_TO_CART) {
-    if (state.cart.find((a) => a === action.id)) return state;
+    cart: []
+}
+
+const initialCourses = {
+  courses: []
+}
+
+
+const cartReducer = (state = initialStore, { type, id }) => {
+  if(type === ADD_TO_CART) {
+    if(state.cart.find(a => a === id)) return state
     return {
       ...state,
-      cart: state.cart.concat(action.id),
-    };
-  } else if (action.type === DELETE_TO_CART) {
-    const cartId = action.id;
-    return state.filter((inf) => inf.id !== cartId);
+      cart: state.cart.concat(id)
+    }
   }
-  // console.log("action :", action);
-  return state;
-};
+  if(type === DELETE_FROM_CART) {
+    return {
+      ...state,
+      cart: state.cart.filter(c => c !== id)
+    }
+  }
+  return state
+}
 
-export default createStore(rootReducer);
+const coursesReducer = (state = initialCourses, action) => {
+  if (action.type === GET_COURSE_LIST) {
+    return {
+      ...state,
+      courses: action.courses
+    }
+  }
+  return state
+}
+
+
+export default createStore(combineReducers({cartReducer, coursesReducer}), composeWithDevTools(applyMiddleware(thunk)))
