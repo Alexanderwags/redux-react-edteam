@@ -11,6 +11,7 @@ const CourseCard = ({
   price,
   professor,
   addCourseToCart,
+  cart,
 }) => (
   <article className="card">
     <div className="img-container s-ratio-16-9 s-radius-tr s-radius-tl">
@@ -26,7 +27,7 @@ const CourseCard = ({
           className="button--ghost-alert button--tiny"
           onClick={() => addCourseToCart(id)}
         >
-          {`$ ${price} USD`}{" "}
+          {cart.find((a) => a === id) ? "en el carrito" : `$ ${price} USD`}
         </button>
       </div>
     </div>
@@ -47,7 +48,9 @@ CourseCard.defaultProps = {
   profesor: "",
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+});
 const mapDispacthToProps = (dispatch) => ({
   addCourseToCart(id) {
     dispatch(addToCart(id));
