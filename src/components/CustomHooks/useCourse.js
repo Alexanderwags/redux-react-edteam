@@ -8,7 +8,7 @@ const useCourse = id => {
     useEffect(() => {
         axios.get(`http://my-json-server.typicode.com/betoquiroga/json-db/cursos/${id}`)
         .then(resp => setCourse(resp.data))
-      }, [])
+      }, [id])
 
     return course  
 }
